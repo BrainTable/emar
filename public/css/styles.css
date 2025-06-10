@@ -1,0 +1,220 @@
+/* Variables de colores */
+:root {
+    --azul: #005baa;
+    --azul-oscuro: #003f6d;
+    --gris: #f4f6f8;
+    --blanco: #fff;
+    --amarillo: #ffd600;
+    --negro: #333;
+}
+
+/* Estilo global */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--negro);
+    background-color: var(--gris); /* Color de respaldo si el video no carga */
+    position: relative;
+    z-index: 1;
+}
+
+/* Video de fondo */
+#video-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que el video cubra todo el fondo */
+    z-index: -1; /* Coloca el video detrás del contenido */
+}
+
+/* Encabezado */
+header {
+    background: rgba(0, 91, 170, 0.8); /* Fondo semitransparente */
+    color: var(--blanco);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.logo span {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    gap: 15px;
+}
+
+nav a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+nav a:hover {
+    background: var(--amarillo);
+    color: var(--azul);
+}
+
+/* Banner principal */
+.banner {
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--blanco);
+    position: relative;
+    z-index: 1; /* Asegura que el contenido esté encima del video */
+}
+
+.banner-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad */
+}
+
+.banner-content p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad */
+}
+
+.banner-content .btn {
+    background: var(--amarillo);
+    color: var(--azul);
+    padding: 15px 30px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para el botón */
+}
+
+.banner-content .btn:hover {
+    background: var(--azul);
+    color: var(--blanco);
+}
+
+/* Sección de servicios */
+.services {
+    padding: 40px 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 1100px;
+}
+
+.services h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--azul);
+}
+
+.service-cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: var(--gris);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    text-align: left;
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--azul-oscuro);
+}
+
+.card p {
+    font-size: 1rem;
+    color: var(--negro);
+}
+
+/* Modal de Login */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    z-index: 1000; /* Encima de todo */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+.modal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--azul);
+    cursor: pointer;
+}
+
+.modal .close:hover {
+    color: var(--azul-oscuro);
+}
+
+/* Pie de página */
+footer {
+    background: var(--azul-oscuro);
+    color: var(--blanco);
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+footer a {
+    color: var(--amarillo);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

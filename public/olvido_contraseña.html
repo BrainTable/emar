@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Contraseña</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f8; }
+        .container { max-width: 400px; margin: 60px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 40px 30px; text-align: center; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recuperar Contraseña</h1>
+        <form method="post">
+            <label>Email: <input type="email" name="email" required></label><br><br>
+            <button type="submit">Enviar enlace de recuperación</button>
+        </form>
+        <p><a href="index.html">Volver a la página principal</a></p>
+        <?php
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Aquí deberías implementar el envío de correo real
+            echo '<p class="success">Si el correo existe, se enviará un enlace de recuperación.</p>';
+        }
+        ?>
+    </div>
+</body>
+</html>

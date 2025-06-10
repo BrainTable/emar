@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMAR | Gestión de Medidores</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        #video-fondo {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100vw;
+            min-height: 100vh;
+            z-index: -1;
+            object-fit: cover;
+        }
+        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); }
+        .modal-content { background: #fff; margin: 10% auto; padding: 30px 20px; border-radius: 10px; max-width: 400px; position: relative; }
+        .close { position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer; }
+        .btn { background: #005baa; color: #fff; border: none; border-radius: 6px; padding: 10px 30px; font-size: 16px; cursor: pointer; text-decoration: none; }
+        .btn:hover { background: #003f6d; }
+        .form-group { margin-bottom: 18px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; }
+        .form-group input { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+        .register-link { margin-top: 10px; text-align: center; }
+        .error-msg { color: red; margin-top: 10px; }
+        .success-msg { color: green; margin-top: 10px; }
+        .registro-link { margin-top: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="video-fondo">
+        <source src="videos/fondo.mp4" type="video/mp4">
+        Tu navegador no soporta videos HTML5.
+    </video>
+
+    <header>
+        <div class="logo">
+            <img src="img/logo-emar.jpg" alt="Logo de EMAR">
+            <span>EMAR S.A. E.S.P.</span>
+        </div>
+        <nav>
+            <a href="#">Inicio</a>
+            <a href="#">Servicios</a>
+            <a href="https://emarsaesp.com/" target="_blank">Productos</a>
+            <a href="#contacto" id="open-contacto">Contacto</a>
+            <a href="#" id="open-login">Iniciar Sesión</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="banner">
+            <div class="banner-content">
+                <!-- Icono de gota de agua aquí -->
+                <div style="font-size:60px; color:#005baa; margin-bottom:10px;">
+                    <i class="fa-solid fa-tint"></i>
+                </div>
+                <h1>Bienvenido a EMAR S.A. E.S.P.</h1>
+                <p>Soluciones innovadoras para la gestión de medidores y servicios públicos.</p>
+                <a href="#servicios" class="btn">Explorar Servicios</a>
+            </div>
+        </section>
+        <div class="registro-link">
+            <a href="#" class="btn" id="open-register-main">¿Aún no tienes cuenta? Regístrate aquí</a>
+        </div>
+    </main>
+
+    <!-- Modal de Login -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-login">&times;</span>
+            <form id="login-form">
+                <h2>Iniciar Sesión</h2>
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" name="email" placeholder="Ingresa tu correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" name="password" placeholder="Ingresa tu contraseña" required>
+                </div>
+                <button type="submit" class="btn">Ingresar</button>
+                <p class="register-link">¿No tienes cuenta? <a href="#" id="open-register">Regístrate aquí</a></p>
+                <p class="register-link"><a href="olvido_contraseña.php">¿Olvidaste tu contraseña?</a></p>
+                <div id="login-msg"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Registro SOLO USUARIO DE MEDIDOR -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-register">&times;</span>
+            <form id="register-form">
+                <h2>Registro de Usuario</h2>
+                <div class="form-group">
+                    <label for="register-name">Nombre Completo</label>
+                    <input type="text" id="register-name" name="nombre" placeholder="Ingresa tu nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Correo Electrónico</label>
+                    <input type="email" id="register-email" name="email" placeholder="Ingresa tu correo electrónico" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña</label>
+                    <input type="password" id="register-password" name="password" placeholder="Crea una contraseña" required>
+                </div>
+                <button type="submit" class="btn">Registrar</button>
+                <div id="register-msg"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Contacto -->
+    <div id="contacto-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="close-contacto">&times;</span>
+        <h2>Contacto</h2>
+        <p>
+          Teléfonos: 3114296028 - 3113712544 - 3102104273<br>
+          WhatsApp: 3203293006<br>
+          Horario: lunes a sábado de 9am a 11am<br>
+          Dirección: Transversal 14 N. 7-85<br>
+          Email: <a href="mailto:emarsaesp1@gmail.com">emarsaesp1@gmail.com</a>
+        </p>
+        <a href="https://wa.me/573203293006" target="_blank" class="btn" style="background:#25d366;color:#fff;display:inline-block;margin-top:10px;">Contactar por WhatsApp</a>
+      </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 EMAR S.A. E.S.P. | Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+    // Mostrar y ocultar modales
+    document.getElementById('open-login').onclick = function(){ document.getElementById('login-modal').style.display = 'block'; }
+    document.getElementById('close-login').onclick = function(){ document.getElementById('login-modal').style.display = 'none'; }
+    document.getElementById('open-register').onclick = function(e){ e.preventDefault(); document.getElementById('login-modal').style.display = 'none'; document.getElementById('register-modal').style.display = 'block'; }
+    document.getElementById('close-register').onclick = function(){ document.getElementById('register-modal').style.display = 'none'; }
+    document.getElementById('open-register-main').onclick = function(e){
+        e.preventDefault();
+        document.getElementById('register-modal').style.display = 'block';
+    };
+    document.getElementById('open-contacto').onclick = function(e){
+        e.preventDefault();
+        document.getElementById('contacto-modal').style.display = 'block';
+    };
+    document.getElementById('close-contacto').onclick = function(){
+        document.getElementById('contacto-modal').style.display = 'none';
+    };
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('login-modal')) document.getElementById('login-modal').style.display = 'none';
+        if (event.target == document.getElementById('register-modal')) document.getElementById('register-modal').style.display = 'none';
+        if (event.target == document.getElementById('contacto-modal')) document.getElementById('contacto-modal').style.display = 'none';
+    }
+
+    // Login AJAX
+    document.getElementById('login-form').onsubmit = function(e) {
+        e.preventDefault();
+        var data = new FormData(this);
+        fetch('index.php', {
+            method: 'POST',
+            body: data
+        }).then(r => r.json()).then(res => {
+            if(res.success) {
+                window.location.href = "menu.php";
+            } else {
+                document.getElementById('login-msg').innerHTML = '<span class="error-msg">'+res.error+'</span>';
+            }
+        });
+    };
+
+    // Registro AJAX SOLO USUARIO DE MEDIDOR
+    document.getElementById('register-form').onsubmit = function(e) {
+        e.preventDefault();
+        var data = new FormData(this);
+        fetch('registrar_usuario.php', {
+            method: 'POST',
+            body: data
+        }).then(r => r.json()).then(res => {
+            if(res.success) {
+                document.getElementById('register-msg').innerHTML = '<span class="success-msg">Usuario registrado correctamente. Ya puedes iniciar sesión.</span>';
+            } else {
+                document.getElementById('register-msg').innerHTML = '<span class="error-msg">'+res.error+'</span>';
+            }
+        });
+    };
+    </script>
+</body>
+</html>
