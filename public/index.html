@@ -94,7 +94,7 @@
     <div id="register-modal" class="modal">
         <div class="modal-content">
             <span class="close" id="close-register">&times;</span>
-            <form id="register-form">
+            <form id="register-form"> enctype="multipart/form-data" method="post">
                 <h2>Registro de Usuario</h2>
                 <div class="form-group">
                     <label for="register-name">Nombre Completo</label>
@@ -108,12 +108,17 @@
                     <label for="register-password">Contraseña</label>
                     <input type="password" id="register-password" name="password" placeholder="Crea una contraseña" required>
                 </div>
+                <div class="form-group">
+                    <label for="register-foto">Foto de Perfil (opcional)</label>
+                    <input type="file" id="register-photo" name="foto" accept="image/jpeg,image/png,image/gif">
+                <input type="hidden" name="csrf_token" id="csrf_token">
                 <button type="submit" class="btn">Registrar</button>
                 <div id="register-msg"></div>
             </form>
         </div>
     </div>
 
+    
     <!-- Modal de Contacto -->
     <div id="contacto-modal" class="modal">
       <div class="modal-content">
@@ -157,6 +162,15 @@
         if (event.target == document.getElementById('contacto-modal')) document.getElementById('contacto-modal').style.display = 'none';
     }
 
+    // Al cargar la página, pide el token CSRF y ponlo en el formulario de registro
+    window.addEventListener('DOMContentLoaded', function() {
+        fetch('get_csrf_token.php')
+          .then(r => r.json())
+          .then(data => {
+            document.getElementById('csrf_token').value = data.token;
+          });
+    });
+
     // Login AJAX
     document.getElementById('login-form').onsubmit = function(e) {
         e.preventDefault();
@@ -177,7 +191,7 @@
     document.getElementById('register-form').onsubmit = function(e) {
         e.preventDefault();
         var data = new FormData(this);
-        fetch('registrar_usuario.php', {
+        fetch('registro_publico.php', { // Cambiado aquí
             method: 'POST',
             body: data
         }).then(r => r.json()).then(res => {

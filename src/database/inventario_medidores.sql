@@ -142,12 +142,16 @@ CREATE INDEX idx_historial_medidor_medidor ON historial_medidor(medidor_id);
 -- Ejemplo de usuarios iniciales (puedes borrar o modificar)
 INSERT INTO usuarios (nombre, email, password, rol_id) VALUES
 ('Admin', 'admin@correo.com', '$2y$10$an7GUwgNnPdx1zo3zM0DtuvGxJQ397mzjqR/eAU0O03iUbif1PR9a', 1),
-('Operario', 'operario@correo.com', '$2y$10$hashoperario', 3),
-('Usuario', 'usuario@correo.com', '$2y$10$hashusuario', 2);
+('Operario', 'operario@correo.com', '$2y$10$hashoperario', 2),
+('Usuario', 'usuario@correo.com', '$2y$10$hashusuario', 3);
 
--- Ejemplo de medidor inicial (puedes borrar o modificar)
-INSERT INTO medidores (numero_serie, usuario_id, fecha_instalacion) VALUES
-('MED10001', 3, '2024-01-10');
+
+-- Ejemplo de medidor con foto (puedes borrar o modificar)
+INSERT INTO medidores (numero_serie, usuario_id, fecha_instalacion, foto) VALUES
+('MED10001', 3, '2025-06-11', 'medidor1.jpg');
+-- Ejemplo de medidor sin foto (puedes borrar o modificar)
+
+
 
 -- Ejemplo de lectura inicial (puedes borrar o modificar)
 INSERT INTO lecturas (medidor_id, fecha, valor, usuario_id, observaciones) VALUES

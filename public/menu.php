@@ -44,6 +44,9 @@ $nombre = $_SESSION['nombre'];
         <nav>
             <a href="index.html">Inicio</a>
             <a href="registrar_usuario_admin.php">Registrar Usuario</a>
+            <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1): ?>
+                <a href="ver_usuarios.php">Ver usuario</a>
+            <?php endif; ?>
             <a href="registrar_operario.php">Registrar Operario</a>
             <a href="ver_operadores.php">Ver Operadores</a>
             <a href="registrar_medidor_admin.php">Registrar Medidor</a>
