@@ -1,3 +1,4 @@
+
 <?php
 // filepath: /opt/lampp/htdocs/Proyectos/Emar/public/cambiar_password.php
 ini_set('display_errors', 1);
@@ -83,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Cambiar Contraseña</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         body { font-family: Arial, sans-serif; background: #f4f6f8; }
         .container { max-width: 400px; margin: 60px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 40px 30px; text-align: center; }

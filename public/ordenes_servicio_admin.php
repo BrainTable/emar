@@ -1,5 +1,5 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/ordenes_servicio_admin.php
+// filepath: c:\xampp\htdocs\emar\public\ordenes_servicio_admin.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -108,8 +108,9 @@ $mysqli->close();
     <meta charset="UTF-8">
     <title>Todas las Órdenes de Servicio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; }
+        body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; }
         .container { max-width: 1300px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 30px 20px; }
         h1 { color: #005baa; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -126,6 +127,29 @@ $mysqli->close();
             padding: 20px 0;
         }
         .filtros-form label { margin-right: 15px; }
+        .header-emar {
+            width: 100%;
+            background: #005baa;
+            padding: 0;
+            margin: 0;
+            position: fixed;
+            top: 0; left: 0; z-index: 1000;
+            height: 70px;
+            display: flex;
+            align-items: center;
+        }
+        .header-emar img {
+            height: 55px;
+            margin-left: 30px;
+        }
+        .header-emar .titulo {
+            color: #fff;
+            font-size: 2.1rem;
+            font-weight: bold;
+            margin-left: 25px;
+            letter-spacing: 2px;
+        }
+        .container { margin-top: 100px; }
         @media (max-width: 900px) {
             .container { padding: 10px; max-width: 100% !important; }
             table, thead, tbody, th, td, tr { display: block; width: 100%; }
@@ -141,10 +165,17 @@ $mysqli->close();
             }
             tr:last-child td { border-bottom: none; }
             .filtros-form label, .filtros-form button { display: block; margin-bottom: 10px; }
+            .header-emar img { height: 40px; margin-left: 10px; }
+            .header-emar .titulo { font-size: 1.2rem; margin-left: 10px; }
+            .container { margin-top: 80px; }
         }
     </style>
 </head>
 <body>
+    <div class="header-emar">
+        <img src="img/logo-emar.jpg" alt="Logo EMAR">
+        <span class="titulo">EMAR - Administración de Órdenes de Servicio</span>
+    </div>
     <div class="container">
         <h1>Todas las Órdenes de Servicio</h1>
         <form method="get" class="filtros-form" style="margin-bottom:20px;">

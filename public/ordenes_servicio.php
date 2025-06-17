@@ -62,9 +62,9 @@ $mysqli->close();
     <meta charset="UTF-8">
     <title>Mis Órdenes de Servicio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; }
-        .container { max-width: 1100px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 30px 20px; }
+        .container { max-width: 1100px; margin: 80px auto 0 auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 30px 20px; }
         h1 { color: #005baa; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
@@ -95,6 +95,7 @@ $mysqli->close();
     </style>
 </head>
 <body>
+    <?php include 'header_emar.php'; ?>
     <div class="container">
         <h1>Mis Órdenes de Servicio</h1>
         <form method="get" class="filtros-form" style="margin-bottom:20px;">

@@ -55,8 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { background: #f4f6f8; font-family: Arial, sans-serif; }
-        .login-container { max-width: 350px; margin: 80px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 30px 20px; }
-        h2 { color: #005baa; text-align: center; }
+        .login-container { max-width: 350px; margin: 200px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 30px 20px; }
+        h2 { color:rgb(130, 170, 0); text-align: center; }
         input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; }
         .error { color: #c00; text-align: center; }
     </style>

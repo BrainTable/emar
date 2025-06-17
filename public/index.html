@@ -17,8 +17,28 @@
             z-index: -1;
             object-fit: cover;
         }
-        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); }
-        .modal-content { background: #fff; margin: 10% auto; padding: 30px 20px; border-radius: 10px; max-width: 400px; position: relative; }
+        /* MODALES CENTRADOS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.show { display: flex !important; }
+        .modal-content {
+            background: #fff;
+            padding: 30px 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            text-align: center;
+        }
         .close { position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer; }
         .btn { background: #005baa; color: #fff; border: none; border-radius: 6px; padding: 10px 30px; font-size: 16px; cursor: pointer; text-decoration: none; }
         .btn:hover { background: #003f6d; }
@@ -27,7 +47,7 @@
         .form-group input { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
         .register-link { margin-top: 10px; text-align: center; }
         .error-msg { color: red; margin-top: 10px; }
-        .success-msg { color: green; margin-top: 10px; }
+        .success-msg { color: rgb(0, 85, 128); margin-top: 10px; }
         .registro-link { margin-top: 30px; text-align: center; }
     </style>
 </head>
@@ -54,7 +74,6 @@
     <main>
         <section class="banner">
             <div class="banner-content">
-                <!-- Icono de gota de agua aquí -->
                 <div style="font-size:60px; color:#005baa; margin-bottom:10px;">
                     <i class="fa-solid fa-tint"></i>
                 </div>
@@ -94,7 +113,7 @@
     <div id="register-modal" class="modal">
         <div class="modal-content">
             <span class="close" id="close-register">&times;</span>
-            <form id="register-form"> enctype="multipart/form-data" method="post">
+            <form id="register-form" enctype="multipart/form-data" method="post">
                 <h2>Registro de Usuario</h2>
                 <div class="form-group">
                     <label for="register-name">Nombre Completo</label>
@@ -111,6 +130,7 @@
                 <div class="form-group">
                     <label for="register-foto">Foto de Perfil (opcional)</label>
                     <input type="file" id="register-photo" name="foto" accept="image/jpeg,image/png,image/gif">
+                </div>
                 <input type="hidden" name="csrf_token" id="csrf_token">
                 <button type="submit" class="btn">Registrar</button>
                 <div id="register-msg"></div>
@@ -118,7 +138,6 @@
         </div>
     </div>
 
-    
     <!-- Modal de Contacto -->
     <div id="contacto-modal" class="modal">
       <div class="modal-content">
@@ -140,26 +159,33 @@
     </footer>
 
     <script>
-    // Mostrar y ocultar modales
-    document.getElementById('open-login').onclick = function(){ document.getElementById('login-modal').style.display = 'block'; }
-    document.getElementById('close-login').onclick = function(){ document.getElementById('login-modal').style.display = 'none'; }
-    document.getElementById('open-register').onclick = function(e){ e.preventDefault(); document.getElementById('login-modal').style.display = 'none'; document.getElementById('register-modal').style.display = 'block'; }
-    document.getElementById('close-register').onclick = function(){ document.getElementById('register-modal').style.display = 'none'; }
+    // Mostrar y ocultar modales usando la clase show para centrar
+    function showModal(id) {
+        document.getElementById(id).classList.add('show');
+    }
+    function hideModal(id) {
+        document.getElementById(id).classList.remove('show');
+    }
+    document.getElementById('open-login').onclick = function(e){ e.preventDefault(); showModal('login-modal'); }
+    document.getElementById('close-login').onclick = function(){ hideModal('login-modal'); }
+    document.getElementById('open-register').onclick = function(e){ e.preventDefault(); hideModal('login-modal'); showModal('register-modal'); }
+    document.getElementById('close-register').onclick = function(){ hideModal('register-modal'); }
     document.getElementById('open-register-main').onclick = function(e){
         e.preventDefault();
-        document.getElementById('register-modal').style.display = 'block';
+        showModal('register-modal');
     };
     document.getElementById('open-contacto').onclick = function(e){
         e.preventDefault();
-        document.getElementById('contacto-modal').style.display = 'block';
+        showModal('contacto-modal');
     };
     document.getElementById('close-contacto').onclick = function(){
-        document.getElementById('contacto-modal').style.display = 'none';
+        hideModal('contacto-modal');
     };
     window.onclick = function(event) {
-        if (event.target == document.getElementById('login-modal')) document.getElementById('login-modal').style.display = 'none';
-        if (event.target == document.getElementById('register-modal')) document.getElementById('register-modal').style.display = 'none';
-        if (event.target == document.getElementById('contacto-modal')) document.getElementById('contacto-modal').style.display = 'none';
+        ['login-modal','register-modal','contacto-modal'].forEach(function(id){
+            var modal = document.getElementById(id);
+            if (event.target == modal) hideModal(id);
+        });
     }
 
     // Al cargar la página, pide el token CSRF y ponlo en el formulario de registro
@@ -191,7 +217,7 @@
     document.getElementById('register-form').onsubmit = function(e) {
         e.preventDefault();
         var data = new FormData(this);
-        fetch('registro_publico.php', { // Cambiado aquí
+        fetch('registro_publico.php', {
             method: 'POST',
             body: data
         }).then(r => r.json()).then(res => {

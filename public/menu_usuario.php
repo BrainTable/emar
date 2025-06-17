@@ -36,10 +36,10 @@ $mysqli->close();
 <head>
     <meta charset="UTF-8">
     <title>EMAR | Menú Usuario</title>
+    <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; margin:0; }
-        .container { max-width: 600px; margin: 60px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 40px 30px; text-align: center; }
+        .container { max-width: 600px; margin: 80px auto 0 auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 40px 30px; text-align: center; }
         nav { margin: 30px 0 0 0; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
         nav a { display: inline-block; padding: 15px 30px; background: #005baa; color: #fff; border-radius: 6px; text-decoration: none; font-weight: bold; transition: background 0.2s; }
         nav a:hover { background: #003f6d; }
@@ -48,8 +48,8 @@ $mysqli->close();
         .header { text-align: right; margin-bottom: 10px; }
         .header span { color: #005baa; font-weight: bold; margin-right: 15px; }
         /* Modal estilos */
-        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); }
-        .modal-content { background: #fff; margin: 10% auto; padding: 30px 20px; border-radius: 10px; max-width: 500px; position: relative; }
+        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+        .modal-content { background: #fff; padding: 30px 20px; border-radius: 10px; max-width: 500px; width: 90%; position: relative; }
         .close { position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer; }
         .form-group { margin-bottom: 18px; text-align: left; }
         .form-group label { display: block; margin-bottom: 5px; }
@@ -156,7 +156,7 @@ $mysqli->close();
     // Mostrar y ocultar modal de orden
     document.getElementById('crear-orden').onclick = function(e){
         e.preventDefault();
-        document.getElementById('modal-orden').style.display = 'block';
+        document.getElementById('modal-orden').style.display = 'flex';
     };
     document.getElementById('close-orden').onclick = function(){
         document.getElementById('modal-orden').style.display = 'none';
@@ -189,7 +189,6 @@ $mysqli->close();
         });
     };
     </script>
-    <!-- Si quieres usar el ícono de gota de agua, incluye FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </body>
 </html>

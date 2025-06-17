@@ -1,5 +1,5 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/medidores.php
+// filepath: c:\xampp\htdocs\emar\public\medidores.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -30,17 +30,24 @@ if (!$mysqli->connect_errno) {
 <head>
     <meta charset="UTF-8">
     <title>Todos los Medidores</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; }
-        .container { max-width: 1100px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 30px 20px; }
+        .container { max-width: 1100px; margin: 100px auto 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 30px 20px; }
         h1 { color: #005baa; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background: #eaf6ff; }
-        img { border-radius: 6px; }
+        img { border-radius: 6px; max-width: 80px; max-height: 80px; }
     </style>
 </head>
 <body>
+    <!-- Encabezado igual que en index.html -->
+    <header>
+        <div class="logo">
+            <img src="img/logo-emar.jpg" alt="Logo de EMAR">
+            <span>EMAR S.A. E.S.P.</span>
+        </div>
+    </header>
     <div class="container">
         <h1>Todos los Medidores Registrados</h1>
         <table>

@@ -18,6 +18,7 @@ $result = $mysqli->query("SELECT id, nombre, email, rol_id FROM usuarios");
 <head>
     <meta charset="UTF-8">
     <title>Ver Usuarios</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         table { border-collapse: collapse; width: 80%; margin: 30px auto; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
@@ -29,6 +30,7 @@ $result = $mysqli->query("SELECT id, nombre, email, rol_id FROM usuarios");
     </style>
 </head>
 <body>
+    <?php include 'header_emar.php'; ?>
     <h2>Lista de Usuarios</h2>
     <table>
         <tr>

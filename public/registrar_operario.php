@@ -1,5 +1,5 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/registrar_operario.php
+// filepath: c:\xampp\htdocs\emar\public\registrar_operario.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -63,15 +63,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Registrar Operario</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; }
-        .container { max-width: 400px; margin: 60px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 40px 30px; text-align: center; }
+        .container { max-width: 400px; margin: 100px auto 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 40px 30px; text-align: center; }
         input, button { margin: 8px 0; padding: 8px; width: 90%; }
         .mensaje { color: #005baa; margin-bottom: 10px; }
         .error { color: red; }
+        /* Ajuste para que el contenido no quede debajo del header fijo */
+        body { margin: 0; }
+        main { margin-top: 80px; }
     </style>
 </head>
 <body>
+    <!-- Encabezado igual que en index.html -->
+    <header>
+        <div class="logo">
+            <img src="img/logo-emar.jpg" alt="Logo de EMAR">
+            <span>EMAR S.A. E.S.P.</span>
+        </div>
+    </header>
+    <main>
     <div class="container">
         <h1>Registrar Operario</h1>
         <?php if ($mensaje): ?>
@@ -89,5 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
         <a href="menu.php">Volver al menú</a>
     </div>
+    </main>
 </body>
 </html>

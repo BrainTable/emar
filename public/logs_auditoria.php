@@ -131,6 +131,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'pdf') {
     <meta charset="UTF-8">
     <title>Panel de Logs de Auditoría</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         body { font-family: Arial, sans-serif; background: #f4f6f8; }
         .container { max-width: 950px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 30px 20px; }
@@ -151,6 +152,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'pdf') {
     </style>
 </head>
 <body>
+    <?php include 'header_emar.php'; ?>
     <div class="container">
         <h2>Panel de Logs de Auditoría</h2>
         <form class="filtros" method="get">

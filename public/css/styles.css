@@ -14,7 +14,7 @@ body {
     margin: 0;
     padding: 0;
     color: var(--negro);
-    background-color: var(--gris); /* Color de respaldo si el video no carga */
+    background-color: var(--gris);
     position: relative;
     z-index: 1;
 }
@@ -26,13 +26,13 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Asegura que el video cubra todo el fondo */
-    z-index: -1; /* Coloca el video detrás del contenido */
+    object-fit: cover;
+    z-index: -1;
 }
 
 /* Encabezado */
 header {
-    background: rgba(0, 91, 170, 0.8); /* Fondo semitransparente */
+    background: #005baa;
     color: var(--blanco);
     padding: 10px 20px;
     display: flex;
@@ -82,26 +82,26 @@ nav a:hover {
 
 /* Banner principal */
 .banner {
-    height: 100vh; /* Ocupa toda la altura de la ventana */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     color: var(--blanco);
     position: relative;
-    z-index: 1; /* Asegura que el contenido esté encima del video */
+    z-index: 1;
 }
 
 .banner-content h1 {
     font-size: 3rem;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .banner-content p {
     font-size: 1.5rem;
     margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .banner-content .btn {
@@ -112,7 +112,7 @@ nav a:hover {
     font-weight: bold;
     border-radius: 5px;
     transition: background 0.3s ease;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para el botón */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .banner-content .btn:hover {
@@ -124,7 +124,7 @@ nav a:hover {
 .services {
     padding: 40px 20px;
     text-align: center;
-    background: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     margin: 20px auto;
     max-width: 1100px;
@@ -165,26 +165,31 @@ nav a:hover {
 
 /* Modal de Login */
 .modal {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-    z-index: 1000; /* Encima de todo */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     justify-content: center;
     align-items: center;
 }
 
+.modal.show {
+    display: flex !important;
+}
+
 .modal-content {
-    background: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
-    padding: 30px;
+    background: #fff;
+    padding: 30px 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 100%;
     max-width: 400px;
+    width: 90%;
     position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    text-align: center;
 }
 
 .modal .close {
@@ -217,4 +222,21 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+/* Ajuste para que el contenido no quede debajo del header fijo */
+main, .container, .banner, .services, .registro-link {
+    margin-top: 80px;
+}
+
+@media (max-width: 700px) {
+    .container, .services {
+        padding: 10px;
+    }
+    table, th, td {
+        font-size: 13px;
+    }
+    .banner-content h1 {
+        font-size: 2rem;
+    }
 }

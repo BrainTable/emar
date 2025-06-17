@@ -1,5 +1,5 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/editar_medidor.php
+// filepath: c:\xampp\htdocs\emar\public\editar_medidor.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -39,17 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
         $errores[] = "Error de seguridad: token CSRF inválido.";
     } else {
-        $marca = trim($_POST['marca'] ?? '');
-        $modelo = trim($_POST['modelo'] ?? '');
-        $diametro = trim($_POST['diametro'] ?? '');
         $ubicacion = trim($_POST['ubicacion'] ?? '');
+        $estado = trim($_POST['estado'] ?? '');
         $fecha_instalacion = $_POST['fecha_instalacion'] ?? '';
         $foto = $medidor['foto'];
 
-        if ($marca === '' || strlen($marca) < 2) $errores[] = "La marca es obligatoria.";
-        if ($modelo === '' || strlen($modelo) < 2) $errores[] = "El modelo es obligatorio.";
-        if ($diametro === '' || !is_numeric($diametro) || $diametro <= 0) $errores[] = "El diámetro debe ser un número positivo.";
         if ($ubicacion === '' || strlen($ubicacion) < 5) $errores[] = "La ubicación es obligatoria.";
+        if ($estado === '' || !in_array($estado, ['activo', 'inactivo', 'mantenimiento'])) $errores[] = "El estado es obligatorio y válido.";
         if ($fecha_instalacion === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_instalacion)) $errores[] = "La fecha de instalación es obligatoria y debe tener formato válido.";
 
         // Validación de imagen
@@ -76,17 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $stmt = $mysqli->prepare("UPDATE medidores SET marca=?, modelo=?, diametro=?, ubicacion=?, fecha_instalacion=?, foto=? WHERE id=? AND usuario_id=?");
-            $stmt->bind_param("ssisssii", $marca, $modelo, $diametro, $ubicacion, $fecha_instalacion, $foto, $id, $usuario_id);
+            $stmt = $mysqli->prepare("UPDATE medidores SET ubicacion=?, estado=?, fecha_instalacion=?, foto=? WHERE id=? AND usuario_id=?");
+            $stmt->bind_param("ssssii", $ubicacion, $estado, $fecha_instalacion, $foto, $id, $usuario_id);
             if ($stmt->execute()) {
-                // Registrar historial de edición
-                $stmt_hist = $mysqli->prepare("INSERT INTO historial_medidor (medidor_id, usuario_id, accion, descripcion) VALUES (?, ?, ?, ?)");
-                $accion = "Edición";
-                $descripcion = "El usuario editó los datos del medidor.";
-                $stmt_hist->bind_param("iiss", $id, $usuario_id, $accion, $descripcion);
-                $stmt_hist->execute();
-                $stmt_hist->close();
-
                 header("Location: mis_medidores.php?msg=editado");
                 exit;
             } else {
@@ -139,20 +127,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" value="<?= htmlspecialchars($medidor['numero_serie']) ?>" disabled>
             </div>
             <div class="form-group">
-                <label for="marca">Marca:</label>
-                <input type="text" name="marca" id="marca" maxlength="50" required value="<?= htmlspecialchars($_POST['marca'] ?? $medidor['marca']) ?>">
-            </div>
-            <div class="form-group">
-                <label for="modelo">Modelo:</label>
-                <input type="text" name="modelo" id="modelo" maxlength="50" required value="<?= htmlspecialchars($_POST['modelo'] ?? $medidor['modelo']) ?>">
-            </div>
-            <div class="form-group">
-                <label for="diametro">Diámetro (mm):</label>
-                <input type="number" name="diametro" id="diametro" min="1" max="1000" required value="<?= htmlspecialchars($_POST['diametro'] ?? $medidor['diametro']) ?>">
-            </div>
-            <div class="form-group">
                 <label for="ubicacion">Ubicación del Medidor:</label>
                 <textarea name="ubicacion" id="ubicacion" rows="2" maxlength="255" required><?= htmlspecialchars($_POST['ubicacion'] ?? $medidor['ubicacion']) ?></textarea>
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado:</label>
+                <select name="estado" id="estado" required>
+                    <option value="activo" <?= ($medidor['estado']=='activo')?'selected':'' ?>>Activo</option>
+                    <option value="inactivo" <?= ($medidor['estado']=='inactivo')?'selected':'' ?>>Inactivo</option>
+                    <option value="mantenimiento" <?= ($medidor['estado']=='mantenimiento')?'selected':'' ?>>Mantenimiento</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="fecha_instalacion">Fecha de Instalación:</label>

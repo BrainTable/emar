@@ -1,11 +1,11 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/registrar_medidor.php
+// filepath: c:\xampp\htdocs\emar\public\registrar_medidor.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
-if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 1) {
+if (!isset($_SESSION['usuario_id'])) {
     header("Location: menu.php");
     exit;
 }
@@ -36,44 +36,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (!preg_match('/^[A-Za-z0-9\-]{3,30}$/', $numero_serie)) {
             $mensaje = "El número de serie debe tener entre 3 y 30 caracteres y solo puede contener letras, números y guiones.";
             $mensaje_tipo = "error";
-        } elseif (!in_array($estado, ['Activo', 'Inactivo', 'En reparación'])) {
+        } elseif (!in_array($estado, ['activo', 'inactivo', 'mantenimiento'])) {
             $mensaje = "El estado seleccionado no es válido.";
             $mensaje_tipo = "error";
         } else {
-            $mysqli = new mysqli("localhost", "root", "", "emar_db");
-            if ($mysqli->connect_errno) {
-                $mensaje = "Error de conexión a la base de datos.";
-                $mensaje_tipo = "error";
-            } else {
-                $check = $mysqli->prepare("SELECT id FROM medidores WHERE numero_serie=?");
-                $check->bind_param("s", $numero_serie);
-                $check->execute();
-                $check->store_result();
-                if ($check->num_rows > 0) {
-                    $mensaje = "El número de serie ya está registrado.";
+            // Procesar la foto si se subió
+            $foto_nombre = null;
+            if (isset($_FILES['foto']) && $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $permitidos = ['image/jpeg', 'image/png', 'image/gif'];
+                $max_tamano = 2 * 1024 * 1024; // 2MB
+
+                if ($_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
+                    $mensaje = "Error al subir la imagen.";
+                    $mensaje_tipo = "error";
+                } elseif (!in_array($_FILES['foto']['type'], $permitidos)) {
+                    $mensaje = "Solo se permiten imágenes JPG, PNG o GIF.";
+                    $mensaje_tipo = "error";
+                } elseif ($_FILES['foto']['size'] > $max_tamano) {
+                    $mensaje = "El archivo supera el tamaño máximo permitido (2MB).";
                     $mensaje_tipo = "error";
                 } else {
-                    $stmt = $mysqli->prepare("INSERT INTO medidores (numero_serie, ubicacion, estado) VALUES (?, ?, ?)");
-                    $stmt->bind_param("sss", $numero_serie, $ubicacion, $estado);
-                    if ($stmt->execute()) {
-                        $mensaje = "Medidor registrado correctamente.";
-                        $mensaje_tipo = "exito";
-                        // Log de auditoría
-                        $usuario = $_SESSION['nombre'] ?? 'Administrador';
-                        $accion = "Registro de medidor";
-                        $detalle = "Medidor: $numero_serie, Ubicación: $ubicacion, Estado: $estado";
-                        $log = $mysqli->prepare("INSERT INTO logs_auditoria (usuario, accion, detalle, fecha) VALUES (?, ?, ?, NOW())");
-                        $log->bind_param("sss", $usuario, $accion, $detalle);
-                        $log->execute();
-                        $log->close();
-                    } else {
-                        $mensaje = "Error al registrar medidor.";
+                    $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+                    $foto_nombre = uniqid('medidor_') . '.' . $ext;
+                    $ruta_destino = __DIR__ . "/img/medidores/" . $foto_nombre;
+                    if (!move_uploaded_file($_FILES['foto']['tmp_name'], $ruta_destino)) {
+                        $mensaje = "No se pudo guardar la imagen.";
                         $mensaje_tipo = "error";
                     }
-                    $stmt->close();
                 }
-                $check->close();
-                $mysqli->close();
+            }
+
+            if ($mensaje_tipo !== "error") {
+                $mysqli = new mysqli("localhost", "root", "", "emar_db");
+                if ($mysqli->connect_errno) {
+                    $mensaje = "Error de conexión a la base de datos.";
+                    $mensaje_tipo = "error";
+                } else {
+                    $check = $mysqli->prepare("SELECT id FROM medidores WHERE numero_serie=?");
+                    $check->bind_param("s", $numero_serie);
+                    $check->execute();
+                    $check->store_result();
+                    if ($check->num_rows > 0) {
+                        $mensaje = "El número de serie ya está registrado.";
+                        $mensaje_tipo = "error";
+                    } else {
+                        $stmt = $mysqli->prepare("INSERT INTO medidores (numero_serie, ubicacion, estado, foto, usuario_id, fecha_instalacion) VALUES (?, ?, ?, ?, ?, CURDATE())");
+                        $usuario_id = $_SESSION['usuario_id'];
+                        $stmt->bind_param("ssssi", $numero_serie, $ubicacion, $estado, $foto_nombre, $usuario_id);
+                        if ($stmt->execute()) {
+                            $mensaje = "Medidor registrado correctamente.";
+                            $mensaje_tipo = "exito";
+                        } else {
+                            $mensaje = "Error al registrar medidor.";
+                            $mensaje_tipo = "error";
+                        }
+                        $stmt->close();
+                    }
+                    $check->close();
+                    $mysqli->close();
+                }
             }
         }
     }
@@ -93,6 +114,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
+    <!-- Línea azul y logo -->
+    <header style="background:#005baa; padding:0;">
+        <div style="max-width:1200px; margin:0 auto; display:flex; align-items:center; height:64px;"></div>
+           <img src="img/logo-emar.jpg" alt="Logo Emar" style="height:48px; margin-left:24px;">
+            <span style="color:#fff; font-size:2rem; font-weight:bold; letter-spacing:2px;">EMAR</span>
+        </div>
+    </header>
     <div class="container">
         <h1>Registrar Medidor</h1>
         <?php if ($mensaje): ?>
@@ -100,15 +128,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php echo htmlspecialchars($mensaje); ?>
             </div>
         <?php endif; ?>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <input type="text" name="numero_serie" placeholder="Número de serie" maxlength="30" required><br>
             <input type="text" name="ubicacion" placeholder="Ubicación" maxlength="100" required><br>
             <select name="estado" required>
                 <option value="">Seleccione estado</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
-                <option value="En reparación">En reparación</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+                <option value="mantenimiento">Mantenimiento</option>
             </select><br>
+            <input type="file" name="foto" accept="image/*"><br>
             <!-- Campo oculto CSRF -->
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <button type="submit">Registrar Medidor</button>

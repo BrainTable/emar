@@ -17,6 +17,8 @@ $nombre = $_SESSION['nombre'];
 <head>
     <meta charset="UTF-8">
     <title>EMAR | Menú Administrador</title>
+    <!-- Enlace al CSS global para el header y la franja azul -->
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         body { font-family: Arial, sans-serif; background: #f4f6f8; margin:0; }
         .container { max-width: 600px; margin: 60px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 40px 30px; text-align: center; }
