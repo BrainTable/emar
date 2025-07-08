@@ -1,12 +1,12 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/ver_operadores.php
 session_start();
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 1) {
     header("Location: login.php");
     exit;
 }
 $mysqli = new mysqli("localhost", "root", "", "emar_db");
-$res = $mysqli->query("SELECT id, nombre, email FROM usuarios WHERE rol_id=3");
+// Agrega la columna foto
+$res = $mysqli->query("SELECT id, nombre, email, foto FROM usuarios WHERE rol_id=3");
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,6 +20,7 @@ $res = $mysqli->query("SELECT id, nombre, email FROM usuarios WHERE rol_id=3");
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
         th { background: #eaf6ff; }
+        .foto-inmueble { max-width: 60px; max-height: 60px; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -31,12 +32,20 @@ $res = $mysqli->query("SELECT id, nombre, email FROM usuarios WHERE rol_id=3");
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Email</th>
+                <th>Foto Inmueble</th>
             </tr>
             <?php while($row = $res->fetch_assoc()): ?>
             <tr>
                 <td><?= $row['id'] ?></td>
                 <td><?= htmlspecialchars($row['nombre']) ?></td>
                 <td><?= htmlspecialchars($row['email']) ?></td>
+                <td>
+                    <?php if (!empty($row['foto'])): ?>
+                        <img src="<?= htmlspecialchars($row['foto']) ?>" alt="Foto inmueble" class="foto-inmueble">
+                    <?php else: ?>
+                        <span>Sin foto</span>
+                    <?php endif; ?>
+                </td>
             </tr>
             <?php endwhile; ?>
         </table>

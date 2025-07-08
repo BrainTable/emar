@@ -1,5 +1,4 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/logs_auditoria.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -23,7 +22,7 @@ $params = [];
 $types = '';
 
 if ($filtro_usuario !== '') {
-    $where[] = "usuario LIKE ?";
+    $where[] = "usuario_id LIKE ?";
     $params[] = "%$filtro_usuario%";
     $types .= 's';
 }
@@ -55,7 +54,7 @@ $total_paginas = ceil($total_logs / $por_pagina);
 $stmt_total->close();
 
 // Obtener logs filtrados
-$sql = "SELECT usuario, accion, detalle, fecha FROM logs_auditoria $where_sql ORDER BY fecha DESC LIMIT ?, ?";
+$sql = "SELECT usuario_id, accion, detalle, fecha FROM logs_auditoria $where_sql ORDER BY fecha DESC LIMIT ?, ?";
 $stmt = $mysqli->prepare($sql);
 if ($params) {
     $params2 = $params;
@@ -74,18 +73,18 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename=logs_auditoria.csv');
     $output = fopen('php://output', 'w');
-    fputcsv($output, ['Usuario', 'Acción', 'Detalle', 'Fecha']);
+    fputcsv($output, ['Usuario ID', 'Acción', 'Detalle', 'Fecha']);
     // Repetimos la consulta de logs filtrados
     if ($params) {
-        $stmt_export = $mysqli->prepare("SELECT usuario, accion, detalle, fecha FROM logs_auditoria $where_sql ORDER BY fecha DESC");
+        $stmt_export = $mysqli->prepare("SELECT usuario_id, accion, detalle, fecha FROM logs_auditoria $where_sql ORDER BY fecha DESC");
         $stmt_export->bind_param($types, ...$params);
         $stmt_export->execute();
         $res_export = $stmt_export->get_result();
     } else {
-        $res_export = $mysqli->query("SELECT usuario, accion, detalle, fecha FROM logs_auditoria ORDER BY fecha DESC");
+        $res_export = $mysqli->query("SELECT usuario_id, accion, detalle, fecha FROM logs_auditoria ORDER BY fecha DESC");
     }
     while($log = $res_export->fetch_assoc()) {
-        fputcsv($output, [$log['usuario'], $log['accion'], $log['detalle'], $log['fecha']]);
+        fputcsv($output, [$log['usuario_id'], $log['accion'], $log['detalle'], $log['fecha']]);
     }
     fclose($output);
     exit;
@@ -100,22 +99,22 @@ if (isset($_GET['export']) && $_GET['export'] === 'pdf') {
     $pdf = new FPDF();
     $pdf->AddPage('L');
     $pdf->SetFont('Arial','B',12);
-    $pdf->Cell(45,10,'Usuario',1);
+    $pdf->Cell(45,10,'Usuario ID',1);
     $pdf->Cell(45,10,'Accion',1);
     $pdf->Cell(120,10,'Detalle',1);
     $pdf->Cell(45,10,'Fecha',1);
     $pdf->Ln();
     $pdf->SetFont('Arial','',10);
     if ($params) {
-        $stmt_export = $mysqli->prepare("SELECT usuario, accion, detalle, fecha FROM logs_auditoria $where_sql ORDER BY fecha DESC");
+        $stmt_export = $mysqli->prepare("SELECT usuario_id, accion, detalle, fecha FROM logs_auditoria $where_sql ORDER BY fecha DESC");
         $stmt_export->bind_param($types, ...$params);
         $stmt_export->execute();
         $res_export = $stmt_export->get_result();
     } else {
-        $res_export = $mysqli->query("SELECT usuario, accion, detalle, fecha FROM logs_auditoria ORDER BY fecha DESC");
+        $res_export = $mysqli->query("SELECT usuario_id, accion, detalle, fecha FROM logs_auditoria ORDER BY fecha DESC");
     }
     while($log = $res_export->fetch_assoc()) {
-        $pdf->Cell(45,8,utf8_decode($log['usuario']),1);
+        $pdf->Cell(45,8,utf8_decode($log['usuario_id']),1);
         $pdf->Cell(45,8,utf8_decode($log['accion']),1);
         $pdf->Cell(120,8,utf8_decode(substr($log['detalle'],0,60)),1);
         $pdf->Cell(45,8,$log['fecha'],1);
@@ -156,7 +155,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'pdf') {
     <div class="container">
         <h2>Panel de Logs de Auditoría</h2>
         <form class="filtros" method="get">
-            <input type="text" name="usuario" placeholder="Usuario" value="<?= htmlspecialchars($filtro_usuario) ?>">
+            <input type="text" name="usuario" placeholder="Usuario ID" value="<?= htmlspecialchars($filtro_usuario) ?>">
             <input type="text" name="accion" placeholder="Acción" value="<?= htmlspecialchars($filtro_accion) ?>">
             <input type="date" name="fecha" value="<?= htmlspecialchars($filtro_fecha) ?>">
             <button type="submit">Filtrar</button>
@@ -167,7 +166,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'pdf') {
         <table>
             <thead>
                 <tr>
-                    <th>Usuario</th>
+                    <th>Usuario ID</th>
                     <th>Acción</th>
                     <th>Detalle</th>
                     <th>Fecha</th>
@@ -176,7 +175,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'pdf') {
             <tbody>
                 <?php while($log = $res->fetch_assoc()): ?>
                 <tr>
-                    <td><?= htmlspecialchars($log['usuario']) ?></td>
+                    <td><?= htmlspecialchars($log['usuario_id']) ?></td>
                     <td><?= htmlspecialchars($log['accion']) ?></td>
                     <td><?= htmlspecialchars($log['detalle']) ?></td>
                     <td><?= htmlspecialchars($log['fecha']) ?></td>

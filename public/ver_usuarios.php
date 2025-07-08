@@ -1,5 +1,4 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/ver_usuarios.php
 session_start();
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 1) {
     header("Location: login.php");
@@ -11,7 +10,8 @@ if ($mysqli->connect_errno) {
     die("Error de conexión a la base de datos.");
 }
 
-$result = $mysqli->query("SELECT id, nombre, email, rol_id FROM usuarios");
+// Agrega la columna foto a la consulta
+$result = $mysqli->query("SELECT id, nombre, email, rol_id, foto FROM usuarios");
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -27,6 +27,7 @@ $result = $mysqli->query("SELECT id, nombre, email, rol_id FROM usuarios");
         body { font-family: Arial, sans-serif; background: #f4f6f8; }
         h2 { text-align: center; color: #005baa; }
         a { color: #005baa; text-decoration: none; }
+        .foto-inmueble { max-width: 80px; max-height: 80px; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -38,6 +39,7 @@ $result = $mysqli->query("SELECT id, nombre, email, rol_id FROM usuarios");
             <th>Nombre</th>
             <th>Email</th>
             <th>Rol</th>
+            <th>Foto Inmueble</th>
         </tr>
         <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
@@ -45,6 +47,13 @@ $result = $mysqli->query("SELECT id, nombre, email, rol_id FROM usuarios");
             <td><?= htmlspecialchars($row['nombre']) ?></td>
             <td><?= htmlspecialchars($row['email']) ?></td>
             <td><?= htmlspecialchars($row['rol_id']) ?></td>
+            <td>
+                <?php if (!empty($row['foto'])): ?>
+                    <img src="<?= htmlspecialchars($row['foto']) ?>" alt="Foto inmueble" class="foto-inmueble">
+                <?php else: ?>
+                    <span>Sin foto</span>
+                <?php endif; ?>
+            </td>
         </tr>
         <?php endwhile; ?>
     </table>

@@ -1,5 +1,4 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/usuarios.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -37,7 +36,8 @@ if ($rol_filtro) {
     $types .= 'i';
 }
 
-$sql = "SELECT id, nombre, email, rol_id FROM usuarios";
+// Agrega la columna foto a la consulta
+$sql = "SELECT id, nombre, email, rol_id, foto FROM usuarios";
 if ($where) $sql .= " WHERE " . implode(' AND ', $where);
 $sql .= " ORDER BY id";
 
@@ -66,6 +66,7 @@ $mysqli->close();
         th { background: #eaf6ff; }
         a { color: #005baa; text-decoration: underline; }
         .filtros-form label { margin-right: 15px; }
+        .foto-inmueble { max-width: 60px; max-height: 60px; border-radius: 8px; }
         @media (max-width: 700px) {
             .container { padding: 10px; max-width: 100% !important; }
             table, thead, tbody, th, td, tr { display: block; width: 100%; }
@@ -111,6 +112,7 @@ $mysqli->close();
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Rol</th>
+                <th>Foto Inmueble</th>
                 <th>Acciones</th>
             </tr>
             <?php foreach ($usuarios as $usuario): ?>
@@ -124,6 +126,13 @@ $mysqli->close();
                     elseif ($usuario['rol_id'] == 3) echo "Operario";
                     else echo "Desconocido";
                 ?></td>
+                <td data-label="Foto Inmueble">
+                    <?php if (!empty($usuario['foto'])): ?>
+                        <img src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Foto inmueble" class="foto-inmueble">
+                    <?php else: ?>
+                        <span>Sin foto</span>
+                    <?php endif; ?>
+                </td>
                 <td data-label="Acciones">
                     <a href="editar_usuario.php?id=<?php echo $usuario['id']; ?>">Editar</a> |
                     <a href="eliminar_usuario.php?id=<?php echo $usuario['id']; ?>" onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">Eliminar</a>
@@ -132,7 +141,7 @@ $mysqli->close();
             <?php endforeach; ?>
             <?php if (empty($usuarios)): ?>
             <tr>
-                <td class="no-data" data-label="Sin datos" colspan="5">No hay usuarios registrados.</td>
+                <td class="no-data" data-label="Sin datos" colspan="6">No hay usuarios registrados.</td>
             </tr>
             <?php endif; ?>
         </table>

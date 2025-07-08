@@ -1,5 +1,4 @@
 <?php
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/menu_operario.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -17,6 +16,7 @@ $nombre = $_SESSION['nombre'];
 <head>
     <meta charset="UTF-8">
     <title>EMAR | Menú Operario</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         body { font-family: Arial, sans-serif; background: #f4f6f8; margin:0; }
         .container { max-width: 600px; margin: 60px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0002; padding: 40px 30px; text-align: center; }
@@ -30,6 +30,11 @@ $nombre = $_SESSION['nombre'];
     </style>
 </head>
 <body>
+    <!-- Barra superior/franja azul -->
+    <div class="barra-superior" style="background:#005baa; color:#fff; padding:12px 0; text-align:center; font-size:20px; font-weight:bold;">
+        <img src="img/logo-emar.jpg" alt="Logo EMAR" style="height:38px; vertical-align:middle; margin-right:10px;">
+        EMAR S.A. E.S.P. - Menú Operario
+    </div>
     <?php include 'header_emar.php'; ?>
     <div class="container">
         <div class="header">

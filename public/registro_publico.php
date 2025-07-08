@@ -2,7 +2,11 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-// filepath: /opt/lampp/htdocs/Proyectos/Emar/public/registro_publico.php
+
+// Mejora para evitar problemas de sesión/CSRF en AJAX
+ini_set('session.cookie_samesite', 'Lax');
+ini_set('session.cookie_secure', 0); // Cambia a 1 si usas HTTPS
+
 session_start();
 header('Content-Type: application/json');
 
@@ -51,6 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
             $foto_nombre = uniqid('usuario_') . '.' . $ext;
             $ruta_destino = __DIR__ . "/../uploads/usuarios/" . $foto_nombre;
+            if (!is_dir(dirname($ruta_destino))) {
+                mkdir(dirname($ruta_destino), 0777, true);
+            }
             if (!move_uploaded_file($_FILES['foto']['tmp_name'], $ruta_destino)) {
                 echo json_encode(['success' => false, 'error' => 'No se pudo guardar la imagen.']);
                 exit;
@@ -81,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->execute()) {
         echo json_encode(['success' => true]);
     } else {
-        echo json_encode(['success' => false, 'error' => 'Error al registrar usuario.']);
+        echo json_encode(['success' => false, 'error' => 'Error al registrar usuario: ' . $stmt->error]);
     }
     $stmt->close();
     $check->close();
